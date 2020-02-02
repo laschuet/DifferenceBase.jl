@@ -1,6 +1,6 @@
 module DifferenceBase
 
-import Base: ==, hash
+import Base: ==, diff, hash
 
 export
     MatrixDifference,
@@ -10,6 +10,7 @@ export
     modified,
     removed
 
+include("difference.jl")
 include("matrix.jl")
 include("set.jl")
 
