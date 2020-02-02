@@ -6,4 +6,5 @@ using Test
     include("difference.jl")
     include("matrix.jl")
     include("set.jl")
+    include("utils.jl")
 end

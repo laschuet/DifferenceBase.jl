@@ -1,6 +1,8 @@
 module DifferenceBase
 
-import Base: ==, diff, hash
+using OrderedCollections
+
+import Base: ==, diff, hash, replace, replace!
 
 export
     MatrixDifference,
@@ -13,5 +15,6 @@ export
 include("difference.jl")
 include("matrix.jl")
 include("set.jl")
+include("utils.jl")
 
 end # module
