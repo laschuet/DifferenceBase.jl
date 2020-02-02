@@ -2,7 +2,7 @@
     diff(a::Set, b::Set)
 
 Compute the difference between set `a` and set `b`, and return a tuple
-containing the unique elements that have been shared, added and removed.
+containing the unique elements that have been shared, added, and removed.
 
 # Examples
 ```jldoctest
