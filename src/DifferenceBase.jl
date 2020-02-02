@@ -1,6 +1,7 @@
 module DifferenceBase
 
 using OrderedCollections
+using SparseArrays
 
 import Base: ==, diff, hash, replace, replace!
 
