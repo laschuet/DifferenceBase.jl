@@ -1,8 +1,8 @@
-using DifferenceBase
+using DifferencesBase
 using SparseArrays
 using Test
 
-@testset "DifferenceBase" begin
+@testset "DifferencesBase" begin
     include("difference.jl")
     include("matrix.jl")
     include("set.jl")

@@ -1,4 +1,4 @@
-module DifferenceBase
+module DifferencesBase
 
 using OrderedCollections
 using SparseArrays
