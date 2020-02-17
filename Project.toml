@@ -1,7 +1,7 @@
 name = "DifferencesBase"
 uuid = "f7c07657-0d0a-4d46-b086-01df223a7b4f"
 authors = ["Lars Schütz"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"

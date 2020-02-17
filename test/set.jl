@@ -1,11 +1,15 @@
 @testset "set difference" begin
-    a = SetDifference([1], [2, 3], [4, 5])
+    a = SetDifference(Set([1]), Set([2, 3]), Set([4, 5]))
     b = SetDifference([1], [2, 3], [4, 5])
     c = SetDifference([1], [2, 3], [4, 5])
 
     @testset "constructors" begin
         @test isa(a, SetDifference)
-        @test a.comvals == [1] && a.addvals == [2, 3] && a.remvals == [4, 5]
+        @test (a.comvals == Set([1]) && a.addvals == Set([2, 3])
+                && a.remvals == Set([4, 5]))
+        @test isa(b, SetDifference)
+        @test (b.comvals == Set([1]) && b.addvals == Set([2, 3])
+                && b.remvals == Set([4, 5]))
     end
 
     @testset "equality operator" begin
@@ -20,8 +24,8 @@
     end
 
     @testset "accessors" begin
-        @test common(a) == [1]
-        @test added(a) == [2, 3]
-        @test removed(a) == [4, 5]
+        @test common(a) == Set([1])
+        @test added(a) == Set([2, 3])
+        @test removed(a) == Set([4, 5])
     end
 end

@@ -4,10 +4,13 @@
 Set difference.
 """
 struct SetDifference{T}
-    comvals::Vector{T}
-    addvals::Vector{T}
-    remvals::Vector{T}
+    comvals::Set{T}
+    addvals::Set{T}
+    remvals::Set{T}
 end
+SetDifference(comvals::AbstractVector{T}, addvals::AbstractVector{T},
+            remvals::AbstractVector{T}) where {T} =
+    SetDifference(Set(comvals), Set(addvals), Set(remvals))
 
 # Set difference equality operator
 ==(a::SetDifference, b::SetDifference) =
