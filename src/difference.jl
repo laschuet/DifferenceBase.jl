@@ -36,13 +36,11 @@ function _diff(A::AbstractMatrix, B::AbstractMatrix, ia::OrderedDict,
             ja::OrderedDict, ib::OrderedDict, jb::OrderedDict)
     T = promote_type(eltype(A), eltype(B))
     modvals = sparse([], [], T[])
-    addivals = view(Matrix{T}(undef, 0, 0), :, :)
-    addjvals = view(Matrix{T}(undef, 0, 0), :, :)
-    remivals = view(Matrix{T}(undef, 0, 0), :, :)
-    remjvals = view(Matrix{T}(undef, 0, 0), :, :)
+    addvals = view(Vector{T}(undef, 0), :)
+    remvals = view(Vector{T}(undef, 0), :)
 
     if size(A) == (0, 0) || size(B) == (0, 0)
-        return modvals, addivals, addjvals, remivals, remjvals
+        return modvals, addvals, remvals
     end
 
     iakeys = collect(keys(ia))
@@ -53,57 +51,25 @@ function _diff(A::AbstractMatrix, B::AbstractMatrix, ia::OrderedDict,
     # Compute modified values
     i = intersect(iakeys, ibkeys)
     j = intersect(jakeys, jbkeys)
-    if length(i) > 0 && length(j) > 0
-        ia2 = replace(i, ia)
-        ja2 = replace(j, ja)
-        ib2 = replace(i, ib)
-        jb2 = replace(j, jb)
-        modvals = sparse(view(A, ia2, ja2) - view(B, ib2, jb2))
-    end
+    ia2 = replace(i, ia)
+    ja2 = replace(j, ja)
+    ib2 = replace(i, ib)
+    jb2 = replace(j, jb)
+    modvals = sparse(view(A, ia2, ja2) - view(B, ib2, jb2))
 
     # Compute added values
-    i = setdiff(ibkeys, iakeys)
-    j = setdiff(jbkeys, jakeys)
-    if length(i) > 0 && length(j) <= 0
-        # Only rows have been added
-        replace!(i, ib)
-        addivals = view(B, i, :)
-    end
-    if length(i) <= 0 && length(j) > 0
-        # Only columns have been added
-        replace!(j, jb)
-        addjvals = view(B, :, j)
-    end
-    if length(i) > 0 && length(j) > 0
-        # Rows and columns have been added
-        replace!(i, ib)
-        replace!(j, jb)
-        addivals = view(B, i, :)
-        addjvals = view(B, :, j)
-    end
+    indicesb = CartesianIndices(B)
+    modindicesb = CartesianIndex.(Iterators.product(ib2, jb2))
+    addindices = setdiff(indicesb, modindicesb)
+    addvals = view(B, addindices)
 
     # Compute removed values
-    i = setdiff(iakeys, ibkeys)
-    j = setdiff(jakeys, jbkeys)
-    if length(i) > 0 && length(j) <= 0
-        # Only rows have been removed
-        replace!(i, ia)
-        remivals = view(A, i, :)
-    end
-    if length(i) <= 0 && length(j) > 0
-        # Only columns have been removed
-        replace!(j, ja)
-        remjvals = view(A, :, j)
-    end
-    if length(i) > 0 && length(j) > 0
-        # Rows and columns have been removed
-        replace!(i, ia)
-        replace!(j, ja)
-        remivals = view(A, i, :)
-        remjvals = view(A, :, j)
-    end
+    indicesa = CartesianIndices(A)
+    modindicesa = CartesianIndex.(Iterators.product(ia2, ja2))
+    remindices = setdiff(indicesa, modindicesa)
+    remvals = view(A, remindices)
 
-    return modvals, addivals, addjvals, remivals, remjvals
+    return modvals, addvals, remvals
 end
 
 """

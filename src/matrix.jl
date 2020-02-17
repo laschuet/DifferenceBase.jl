@@ -1,26 +1,22 @@
 """
-    MatrixDifference{Tm<:AbstractMatrix,Ta<:AbstractMatrix,Tr<:AbstractMatrix}
+    MatrixDifference{Tm<:AbstracArray,Ta<:AbstractArray,Tr<:AbstractArray}
 
 Matrix difference.
 """
-struct MatrixDifference{Tm<:AbstractMatrix,Ta<:AbstractMatrix,Tr<:AbstractMatrix}
+struct MatrixDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray}
     modvals::Tm
-    addivals::Ta
-    addjvals::Ta
-    remivals::Tr
-    remjvals::Tr
+    addvals::Ta
+    remvals::Tr
 end
 
 # Matrix difference equality operator
 ==(a::MatrixDifference, b::MatrixDifference) =
-    (a.modvals == b.modvals && a.addivals == b.addivals
-            && a.addjvals == b.addjvals && a.remivals == b.remivals
-            && a.remjvals == b.remjvals)
+    (a.modvals == b.modvals && a.addvals == b.addvals && a.remvals == b.remvals)
 
 # Matrix difference hash code
 hash(a::MatrixDifference, h::UInt) =
-    hash(a.modvals, hash(a.addivals, hash(a.addjvals, hash(a.remivals,
-        hash(a.remjvals, hash(:MatrixDifference, h))))))
+    hash(a.modvals, hash(a.addvals, hash(a.remvals,
+        hash(:MatrixDifference, h))))
 
 """
     modified(a::MatrixDifference)
@@ -32,33 +28,13 @@ modified(a::MatrixDifference) = a.modvals
 """
     added(a::MatrixDifference)
 
-Access the tuple containing the elements added per dimension.
+Access the added elements.
 """
-added(a::MatrixDifference) = a.addivals, a.addjvals
-
-"""
-    added(a::MatrixDifference, dim::Integer)
-
-Access the added elements of dimension `dim`.
-"""
-function added(a::MatrixDifference, dim::Integer)
-    1 <= dim <= 2 || throw(ArgumentError("dimension $dim out of range (1:2)"))
-    return added(a)[dim]
-end
+added(a::MatrixDifference) = a.addvals
 
 """
     removed(a::MatrixDifference)
 
-Access the tuple containing the elements removed per dimension.
+Access the removed elements.
 """
-removed(a::MatrixDifference) = a.remivals, a.remjvals
-
-"""
-    removed(a::MatrixDifference, dim::Integer)
-
-Access the removed elements of dimension `dim`.
-"""
-function removed(a::MatrixDifference, dim::Integer)
-    1 <= dim <= 2 || throw(ArgumentError("dimension $dim out of range (1:2)"))
-    return removed(a)[dim]
-end
+removed(a::MatrixDifference) = a.remvals
