@@ -8,6 +8,14 @@
 
 Types and utility functions for differences.
 
+## Installation
+
+Open a Julia REPL and enter
+
+```julia
+] add DifferencesBase
+```
+
 ## License
 
 DifferencesBase.jl is licensed under the [MIT License](./LICENSE.txt).
