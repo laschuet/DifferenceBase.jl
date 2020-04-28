@@ -1,9 +1,9 @@
 """
-    SetDifference{T}
+    SetDifference{T} <: AbstractDifference
 
 Set difference.
 """
-struct SetDifference{T}
+struct SetDifference{T} <: AbstractDifference
     comvals::Set{T}
     addvals::Set{T}
     remvals::Set{T}
@@ -23,20 +23,21 @@ hash(a::SetDifference, h::UInt) =
 """
     common(a::SetDifference)
 
-Access the common elements.
+Access the modified elements.
 """
 common(a::SetDifference) = a.comvals
 
 """
-    added(a::SetDifference)
+    diff(a::AbstractSet, b::AbstractSet)
 
-Access the added elements.
-"""
-added(a::SetDifference) = a.addvals
+Compute the difference between set `a` and set `b`, and return a tuple
+containing the unique elements that have been shared, added, and removed.
 
+# Examples
+```jldoctest
+julia> diff(Set([1, 2, 3, 3]), Set([4, 2, 1]))
+(Set([1, 2]), Set([4]), Set([3]))
+```
 """
-    removed(a::SetDifference)
-
-Access the removed elements.
-"""
-removed(a::SetDifference) = a.remvals
+diff(a::AbstractSet, b::AbstractSet) =
+    intersect(a, b), setdiff(b, a), setdiff(a, b)

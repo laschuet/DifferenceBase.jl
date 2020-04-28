@@ -6,6 +6,7 @@ using SparseArrays
 import Base: ==, diff, hash, replace, replace!
 
 export
+    AbstractDifference,
     MatrixDifference,
     SetDifference,
     added,
