@@ -27,4 +27,20 @@
         @test added(a) == [1 2]
         @test removed(a) == [3 4]
     end
+
+    @testset "difference" begin
+        A = [1 0 1; 0 1 0; 0 0 1]
+        B = [1 1 1 1; 1 1 1 1]
+        ia = [1, 2, 5]
+        ja = [2, 8, 11]
+        ib = [1, 8]
+        jb = [2, 3, 4, 11]
+        E = Vector(undef, 0)
+        @test diff(A, A, ia, ja, ia, ja) == (sparse([0 0 0; 0 0 0; 0 0 0]), E, E)
+        @test diff(A, B, ia, ja, ib, jb) == (sparse([0 0]), [1, 1, 1, 1, 1, 1], [0, 0, 0, 1, 0, 0, 1])
+        @test diff(B, A, ib, jb, ia, ja) == (sparse([0 0]), [0, 0, 0, 1, 0, 0, 1], [1, 1, 1, 1, 1, 1])
+        @test diff(A, A) == (sparse([0 0 0; 0 0 0; 0 0 0]), E, E)
+        @test diff(A, B) == (sparse([0 -1 0; -1 0 -1]), [1, 1], [0, 0, 1])
+        @test diff(B, A) == (sparse([0 1 0; 1 0 1]), [0, 0, 1], [1, 1])
+    end
 end
