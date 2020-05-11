@@ -8,6 +8,7 @@ import Base: ==, diff, hash, replace, replace!
 export
     AbstractDifference,
     MatrixDifference,
+    NamedTupleDifference,
     SetDifference,
     added,
     common,
@@ -16,6 +17,7 @@ export
 
 include("difference.jl")
 include("matrix.jl")
+include("namedtuple.jl")
 include("set.jl")
 include("utils.jl")
 
