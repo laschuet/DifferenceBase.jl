@@ -1,12 +1,12 @@
 @testset "named tuple difference" begin
-    a = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (; z=3))
-    b = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (; z=3))
-    c = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (; z=3))
+    a = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (z=3,))
+    b = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (z=3,))
+    c = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (z=3,))
 
     @testset "constructors" begin
         @test isa(a, NamedTupleDifference)
         @test (a.modvals == (x1=1, x2=[0.0, 1.0]) && a.addvals == NamedTuple()
-                && a.remvals == (; z=3))
+                && a.remvals == (z=3,))
     end
 
     @testset "equality operator" begin
@@ -23,6 +23,18 @@
     @testset "accessors" begin
         @test modified(a) == (x1=1, x2=[0.0, 1.0])
         @test added(a) == NamedTuple()
-        @test removed(a) == (; z=3)
+        @test removed(a) == (z=3,)
+    end
+
+    @testset "difference" begin
+        a = (x=1,)
+        b = (x=(s=1, t=2),)
+        c = (x=[1 2],)
+
+        @test diff(a, a) == ((x=0,), NamedTuple(), NamedTuple())
+        @test diff(b, b) == ((x=((s=0, t=0), NamedTuple(), NamedTuple()),),
+                NamedTuple(), NamedTuple())
+        @test diff(c, c) == ((x=([0 0], [], []),), NamedTuple(), NamedTuple())
+
     end
 end
