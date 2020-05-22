@@ -80,10 +80,6 @@ function _diff(A::AbstractMatrix, B::AbstractMatrix, ia::OrderedDict,
     addvals = view(Vector{T}(undef, 0), :)
     remvals = view(Vector{T}(undef, 0), :)
 
-    if size(A) == (0, 0) || size(B) == (0, 0)
-        return modvals, addvals, remvals
-    end
-
     iakeys = collect(keys(ia))
     jakeys = collect(keys(ja))
     ibkeys = collect(keys(ib))
