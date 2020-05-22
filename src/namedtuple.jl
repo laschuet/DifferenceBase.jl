@@ -19,6 +19,20 @@ hash(a::NamedTupleDifference, h::UInt) =
         hash(:NamedTupleDifference, h))))
 
 """
+    added(a::NamedTupleDifference)
+
+Access the added elements.
+"""
+added(a::NamedTupleDifference) = a.addvals
+
+"""
+    removed(a::NamedTupleDifference)
+
+Access the removed elements.
+"""
+removed(a::NamedTupleDifference) = a.remvals
+
+"""
     modified(a::NamedTupleDifference)
 
 Access the modified elements.

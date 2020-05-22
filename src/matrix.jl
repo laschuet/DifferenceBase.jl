@@ -19,6 +19,20 @@ hash(a::MatrixDifference, h::UInt) =
         hash(:MatrixDifference, h))))
 
 """
+    added(a::MatrixDifference)
+
+Access the added elements.
+"""
+added(a::MatrixDifference) = a.addvals
+
+"""
+    removed(a::MatrixDifference)
+
+Access the removed elements.
+"""
+removed(a::MatrixDifference) = a.remvals
+
+"""
     modified(a::MatrixDifference)
 
 Access the modified elements.

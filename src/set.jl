@@ -21,6 +21,20 @@ hash(a::SetDifference, h::UInt) =
     hash(a.comvals, hash(a.addvals, hash(a.remvals, hash(:SetDifference, h))))
 
 """
+    added(a::SetDifference)
+
+Access the added elements.
+"""
+added(a::SetDifference) = a.addvals
+
+"""
+    removed(a::SetDifference)
+
+Access the removed elements.
+"""
+removed(a::SetDifference) = a.remvals
+
+"""
     common(a::SetDifference)
 
 Access the modified elements.
