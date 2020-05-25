@@ -75,11 +75,6 @@ end
 # Core matrix difference implementation
 function _diff(A::AbstractMatrix, B::AbstractMatrix, ia::OrderedDict,
             ja::OrderedDict, ib::OrderedDict, jb::OrderedDict)
-    T = promote_type(eltype(A), eltype(B))
-    modvals = sparse([], [], T[])
-    addvals = view(Vector{T}(undef, 0), :)
-    remvals = view(Vector{T}(undef, 0), :)
-
     iakeys = collect(keys(ia))
     jakeys = collect(keys(ja))
     ibkeys = collect(keys(ib))
