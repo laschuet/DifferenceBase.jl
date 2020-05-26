@@ -47,11 +47,11 @@ containing the elements that have been modified, added (per row and column), and
 removed (per row and column).
 """
 function diff(A::AbstractMatrix, B::AbstractMatrix)
-    iadict = OrderedDict{Int,Int}(i => i for i = 1:size(A, 1))
-    jadict = OrderedDict{Int,Int}(j => j for j = 1:size(A, 2))
-    ibdict = OrderedDict{Int,Int}(i => i for i = 1:size(B, 1))
-    jbdict = OrderedDict{Int,Int}(j => j for j = 1:size(B, 2))
-    return _diff(A, B, iadict, jadict, ibdict, jbdict)
+    ia = collect(1:size(A, 1))
+    ja = collect(1:size(A, 2))
+    ib = collect(1:size(B, 1))
+    jb = collect(1:size(B, 2))
+    return diff(A, B, ia, ja, ib, jb)
 end
 
 """
@@ -65,28 +65,18 @@ respectively) of `A` or `B`.
 """
 function diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
             ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
-    iadict = OrderedDict(zip(ia, 1:length(ia)))
-    jadict = OrderedDict(zip(ja, 1:length(ja)))
-    ibdict = OrderedDict(zip(ib, 1:length(ib)))
-    jbdict = OrderedDict(zip(jb, 1:length(jb)))
-    return _diff(A, B, iadict, jadict, ibdict, jbdict)
-end
-
-# Core matrix difference implementation
-function _diff(A::AbstractMatrix, B::AbstractMatrix, ia::OrderedDict,
-            ja::OrderedDict, ib::OrderedDict, jb::OrderedDict)
-    iakeys = collect(keys(ia))
-    jakeys = collect(keys(ja))
-    ibkeys = collect(keys(ib))
-    jbkeys = collect(keys(jb))
+    iamap = Dict(zip(ia, 1:length(ia)))
+    jamap = Dict(zip(ja, 1:length(ja)))
+    ibmap = Dict(zip(ib, 1:length(ib)))
+    jbmap = Dict(zip(jb, 1:length(jb)))
 
     # Compute modified values
-    i = intersect(iakeys, ibkeys)
-    j = intersect(jakeys, jbkeys)
-    ia2 = replace(i, ia)
-    ja2 = replace(j, ja)
-    ib2 = replace(i, ib)
-    jb2 = replace(j, jb)
+    i = intersect(ia, ib)
+    j = intersect(ja, jb)
+    ia2 = replace(i, iamap)
+    ja2 = replace(j, jamap)
+    ib2 = replace(i, ibmap)
+    jb2 = replace(j, jbmap)
     modvals = sparse(view(A, ia2, ja2) - view(B, ib2, jb2))
 
     # Compute added values
