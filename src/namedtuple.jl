@@ -74,5 +74,5 @@ function diff(a::NamedTuple, b::NamedTuple)
     end
     remvals = (; zip(remnames, remvalues)...)
 
-    return (modvals, addvals, remvals)
+    return NamedTupleDifference(modvals, addvals, remvals)
 end

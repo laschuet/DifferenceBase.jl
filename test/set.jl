@@ -32,8 +32,8 @@
     @testset "difference" begin
         a = Set([1, 2, 3, 3])
         b = Set([4, 2, 1])
-        @test diff(a, a) == (Set([1, 2, 3]), Set([]), Set([]))
-        @test diff(a, b) == (Set([1, 2]), Set([4]), Set([3]))
-        @test diff(b, a) == (Set([2, 1]), Set([3]), Set([4]))
+        @test diff(a, a) == SetDifference(Set([1, 2, 3]), Set(Int[]), Set(Int[]))
+        @test diff(a, b) == SetDifference(Set([1, 2]), Set([4]), Set([3]))
+        @test diff(b, a) == SetDifference(Set([2, 1]), Set([3]), Set([4]))
     end
 end

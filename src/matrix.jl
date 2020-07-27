@@ -91,5 +91,5 @@ function diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
     remindices = setdiff(indicesa, modindicesa)
     remvals = view(A, remindices)
 
-    return modvals, addvals, remvals
+    return MatrixDifference(modvals, addvals, remvals)
 end

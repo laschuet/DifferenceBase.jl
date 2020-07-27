@@ -54,4 +54,4 @@ julia> diff(Set([1, 2, 3, 3]), Set([4, 2, 1]))
 ```
 """
 diff(a::AbstractSet, b::AbstractSet) =
-    intersect(a, b), setdiff(b, a), setdiff(a, b)
+    SetDifference(intersect(a, b), setdiff(b, a), setdiff(a, b))

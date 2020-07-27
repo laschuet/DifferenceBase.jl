@@ -31,14 +31,24 @@
         b = (x=(s=1, t=2),)
         c = (x=[1 2],)
         d = (x=2, y=1)
-        # e = (x=[1, 2],)
 
-        @test diff(a, a) == ((x=0,), NamedTuple(), NamedTuple())
-        @test diff(b, b) == ((x=((s=0, t=0), NamedTuple(), NamedTuple()),),
-                NamedTuple(), NamedTuple())
-        @test diff(c, c) == ((x=([0 0], [], []),), NamedTuple(), NamedTuple())
+        @test diff(a, a) == NamedTupleDifference(
+            (x=0,),
+            NamedTuple(),
+            NamedTuple(),
+        )
+        @test diff(b, b) == NamedTupleDifference(
+            (x=NamedTupleDifference((s=0, t=0), NamedTuple(), NamedTuple()),),
+            NamedTuple(),
+            NamedTuple(),
+        )
+        @test diff(c, c) == NamedTupleDifference(
+            (x=MatrixDifference([0 0], [], []),),
+            NamedTuple(),
+            NamedTuple(),
+        )
 
-        @test diff(a, d) == ((x=-1,), (y=1,), NamedTuple())
-        @test diff(d, a) == ((x=1,), NamedTuple(), (y=1,))
+        @test diff(a, d) == NamedTupleDifference((x=-1,), (y=1,), NamedTuple())
+        @test diff(d, a) == NamedTupleDifference((x=1,), NamedTuple(), (y=1,))
     end
 end
