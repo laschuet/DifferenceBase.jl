@@ -2,7 +2,7 @@ module DifferencesBase
 
 using SparseArrays
 
-import Base: ==, diff, hash, replace, replace!
+import Base: ==, diff, hash
 
 export
     AbstractDifference,
@@ -18,6 +18,5 @@ include("difference.jl")
 include("matrix.jl")
 include("namedtuple.jl")
 include("set.jl")
-include("utils.jl")
 
 end # module

@@ -81,10 +81,10 @@ function diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
     # Compute modified values
     i = intersect(ia, ib)
     j = intersect(ja, jb)
-    ia2 = replace(i, iamap)
-    ja2 = replace(j, jamap)
-    ib2 = replace(i, ibmap)
-    jb2 = replace(j, jbmap)
+    ia2 = getindex.(Ref(iamap), i)
+    ja2 = getindex.(Ref(jamap), j)
+    ib2 = getindex.(Ref(ibmap), i)
+    jb2 = getindex.(Ref(jbmap), j)
     modvals = sparse(view(A, ia2, ja2) - view(B, ib2, jb2))
 
     # Compute added values
