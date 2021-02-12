@@ -4,6 +4,7 @@ using SparseArrays
 
 export
     AbstractDifference,
+    ArrayDifference,
     MatrixDifference,
     NamedTupleDifference,
     SetDifference,

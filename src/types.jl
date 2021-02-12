@@ -6,15 +6,16 @@ Supertype for differences.
 abstract type AbstractDifference end
 
 """
-    MatrixDifference{Tm<:AbstracArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
+    ArrayDifference{Tm<:AbstracArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
 
-Matrix difference.
+Array difference.
 """
-struct MatrixDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
+struct ArrayDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
     modvals::Tm
     addvals::Ta
     remvals::Tr
 end
+const MatrixDifference = ArrayDifference
 
 """
     NamedTupleDifference <: AbstractDifference
@@ -39,13 +40,13 @@ struct SetDifference{Tc,Ta,Tr} <: AbstractDifference
 end
 
 # Equality operator
-Base.:(==)(a::Union{MatrixDifference,NamedTupleDifference}, b::Union{MatrixDifference,NamedTupleDifference}) =
+Base.:(==)(a::Union{ArrayDifference,NamedTupleDifference}, b::Union{ArrayDifference,NamedTupleDifference}) =
     a.modvals == b.modvals && a.addvals == b.addvals && a.remvals == b.remvals
 Base.:(==)(a::SetDifference, b::SetDifference) =
     a.comvals == b.comvals && a.addvals == b.addvals && a.remvals == b.remvals
 
 # Hash code
-Base.hash(a::MatrixDifference, h::UInt) =
+Base.hash(a::ArrayDifference, h::UInt) =
     hash(a.modvals, hash(a.addvals, hash(a.remvals, hash(:MatrixDifference, h))))
 Base.hash(a::NamedTupleDifference, h::UInt) =
     hash(a.modvals, hash(a.addvals, hash(a.remvals, hash(:NamedTupleDifference, h))))
@@ -67,11 +68,11 @@ Access the removed elements.
 removed(a::AbstractDifference) = a.remvals
 
 """
-    modified(a::Union{MatrixDifference,NamedTupleDifference})
+    modified(a::Union{ArrayDifference,NamedTupleDifference})
 
 Access the modified elements.
 """
-modified(a::Union{MatrixDifference,NamedTupleDifference}) = a.modvals
+modified(a::Union{ArrayDifference,NamedTupleDifference}) = a.modvals
 
 """
     common(a::SetDifference)

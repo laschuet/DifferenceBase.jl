@@ -1,11 +1,11 @@
-@testset "matrix difference" begin
+@testset "array difference" begin
     modvals = [1 2; 3 4]
-    a = MatrixDifference(modvals, view([1 2], :, :), view([3 4], :, :))
-    b = MatrixDifference(sparse(modvals), [1 2], [3 4])
-    c = MatrixDifference(modvals, [1 2], [3 4])
+    a = ArrayDifference(modvals, view([1 2], :, :), view([3 4], :, :))
+    b = ArrayDifference(sparse(modvals), [1 2], [3 4])
+    c = ArrayDifference(modvals, [1 2], [3 4])
 
     @testset "constructors" begin
-        @test isa(a, MatrixDifference) && isa(b, MatrixDifference)
+        @test isa(a, ArrayDifference) && isa(b, ArrayDifference)
         @test a.modvals == modvals && a.addvals == [1 2] && a.remvals == [3 4]
         @test (b.modvals == sparse(modvals) && b.addvals == [1 2]
                 && b.remvals == [3 4])
@@ -28,7 +28,7 @@
         @test removed(a) == [3 4]
     end
 
-    @testset "difference" begin
+    @testset "matrix difference" begin
         A = [1 0 1; 0 1 0; 0 0 1]
         B = [1 1 1 1; 1 1 1 1]
         ia = [1, 2, 5]
