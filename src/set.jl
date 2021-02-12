@@ -8,9 +8,6 @@ struct SetDifference{Tc,Ta,Tr} <: AbstractDifference
     addvals::Set{Ta}
     remvals::Set{Tr}
 end
-SetDifference(comvals::AbstractVector{T}, addvals::AbstractVector{T},
-            remvals::AbstractVector{T}) where {T} =
-    SetDifference(Set(comvals), Set(addvals), Set(remvals))
 
 # Set difference equality operator
 Base.:(==)(a::SetDifference, b::SetDifference) =
