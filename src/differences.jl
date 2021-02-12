@@ -1,4 +1,46 @@
 """
+    diff(a::AbstractVector, b::AbstractVector)
+
+Compute the difference between vector `a` and vector `b`, and return a tuple
+containing the elements that have been modified, added, and removed.
+"""
+function Base.diff(a::AbstractVector, b::AbstractVector)
+    diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
+end
+
+"""
+    diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector)
+
+Like [`diff`](@ref), but provide integer vectors that number the rows of the
+vectors `a` and `b`. The vectors `ia` and `ib` represent the row numbers of
+`a` and `b` respectively. The position of each vector element refers to the
+row index of `a` or `b`.
+"""
+function Base.diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector,
+                ib::AbstractVector)
+    mapa = Dict(zip(ia, 1:length(ia)))
+    mapb = Dict(zip(ib, 1:length(ib)))
+
+    # Compute modified values
+    i = intersect(ia, ib)
+    modia = getindex.(Ref(mapa), i)
+    modib = getindex.(Ref(mapb), i)
+    modvals = sparse(view(a, modia) - view(b, modib))
+
+    # Compute added values
+    addi = setdiff(ib, ia)
+    addinds = getindex.(Ref(mapb), addi)
+    addvals = view(b, addinds)
+
+    # Compute removed values
+    remi = setdiff(ia, ib)
+    reminds = getindex.(Ref(mapa), remi)
+    remvals = view(a, reminds)
+
+    return VectorDifference(modvals, addvals, remvals)
+end
+
+"""
     diff(A::AbstractMatrix, B::AbstractMatrix)
 
 Compute the difference between matrix `A` and matrix `B`, and return a tuple

@@ -28,6 +28,20 @@
         @test removed(a) == [3 4]
     end
 
+    @testset "vector difference" begin
+        a = [1, 2, 5]
+        b = [2, 3, 5, 7]
+        ia = [1, 2, 5]
+        ib = [2, 3, 5, 7]
+        E = Vector(undef, 0)
+        @test diff(a, a, ia, ia) == VectorDifference(sparse([0, 0, 0]), E, E)
+        @test diff(a, b, ia, ib) == VectorDifference(sparse([0, 0]), [3, 7], [1])
+        @test diff(b, a, ib, ia) == VectorDifference(sparse([0, 0]), [1], [3, 7])
+        @test diff(a, a) == VectorDifference(sparse([0, 0, 0]), E, E)
+        @test diff(a, b) == VectorDifference(sparse([-1, -1, 0]), [7], E)
+        @test diff(b, a) == VectorDifference(sparse([1, 1, 0]), E, [7])
+    end
+
     @testset "matrix difference" begin
         A = [1 0 1; 0 1 0; 0 0 1]
         B = [1 1 1 1; 1 1 1 1]

@@ -15,6 +15,7 @@ struct ArrayDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray} <:
     addvals::Ta
     remvals::Tr
 end
+const VectorDifference = ArrayDifference
 const MatrixDifference = ArrayDifference
 
 """
