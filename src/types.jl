@@ -47,12 +47,13 @@ Base.:(==)(a::SetDifference, b::SetDifference) =
     a.comvals == b.comvals && a.addvals == b.addvals && a.remvals == b.remvals
 
 # Hash code
-Base.hash(a::ArrayDifference, h::UInt) =
-    hash(a.modvals, hash(a.addvals, hash(a.remvals, hash(:MatrixDifference, h))))
-Base.hash(a::NamedTupleDifference, h::UInt) =
-    hash(a.modvals, hash(a.addvals, hash(a.remvals, hash(:NamedTupleDifference, h))))
-Base.hash(a::SetDifference, h::UInt) =
-    hash(a.comvals, hash(a.addvals, hash(a.remvals, hash(:SetDifference, h))))
+function Base.hash(a::T, h::UInt) where T<:AbstractDifference
+    hashval = hash(:T, h)
+    for f in fieldnames(T)
+        hashval = hash(getfield(a, f), hashval)
+    end
+    return hashval
+end
 
 """
     added(a::AbstractDifference)
