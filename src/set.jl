@@ -1,12 +1,12 @@
 """
-    SetDifference{T} <: AbstractDifference
+    SetDifference{Tc,Ta,Tr} <: AbstractDifference
 
 Set difference.
 """
-struct SetDifference{T} <: AbstractDifference
-    comvals::Set{T}
-    addvals::Set{T}
-    remvals::Set{T}
+struct SetDifference{Tc,Ta,Tr} <: AbstractDifference
+    comvals::Set{Tc}
+    addvals::Set{Ta}
+    remvals::Set{Tr}
 end
 SetDifference(comvals::AbstractVector{T}, addvals::AbstractVector{T},
             remvals::AbstractVector{T}) where {T} =
