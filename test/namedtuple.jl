@@ -43,7 +43,7 @@
             NamedTuple(),
         )
         @test diff(c, c) == NamedTupleDifference(
-            (x=MatrixDifference([0 0], [], []),),
+            (x=ArrayDifference([0, 0], [], []),),
             NamedTuple(),
             NamedTuple(),
         )

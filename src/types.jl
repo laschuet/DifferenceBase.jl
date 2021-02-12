@@ -6,11 +6,11 @@ Supertype for differences.
 abstract type AbstractDifference end
 
 """
-    ArrayDifference{Tm<:AbstracArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
+    ArrayDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
 
 Array difference.
 """
-struct ArrayDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
+struct ArrayDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
     modvals::Tm
     addvals::Ta
     remvals::Tr

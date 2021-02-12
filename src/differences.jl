@@ -86,7 +86,7 @@ function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
     ja2 = getindex.(Ref(jamap), j)
     ib2 = getindex.(Ref(ibmap), i)
     jb2 = getindex.(Ref(jbmap), j)
-    modvals = sparse(view(A, ia2, ja2) - view(B, ib2, jb2))
+    modvals = sparse(vec(view(A, ia2, ja2) - view(B, ib2, jb2)))
 
     # Compute added values
     indicesb = CartesianIndices(B)
