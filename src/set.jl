@@ -13,11 +13,11 @@ SetDifference(comvals::AbstractVector{T}, addvals::AbstractVector{T},
     SetDifference(Set(comvals), Set(addvals), Set(remvals))
 
 # Set difference equality operator
-==(a::SetDifference, b::SetDifference) =
+Base.:(==)(a::SetDifference, b::SetDifference) =
     a.comvals == b.comvals && a.addvals == b.addvals && a.remvals == b.remvals
 
 # Set difference hash code
-hash(a::SetDifference, h::UInt) =
+Base.hash(a::SetDifference, h::UInt) =
     hash(a.comvals, hash(a.addvals, hash(a.remvals, hash(:SetDifference, h))))
 
 """
@@ -53,5 +53,5 @@ julia> diff(Set([1, 2, 3, 3]), Set([4, 2, 1]))
 (Set([1, 2]), Set([4]), Set([3]))
 ```
 """
-diff(a::AbstractSet, b::AbstractSet) =
+Base.diff(a::AbstractSet, b::AbstractSet) =
     SetDifference(intersect(a, b), setdiff(b, a), setdiff(a, b))

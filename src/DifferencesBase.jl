@@ -2,8 +2,6 @@ module DifferencesBase
 
 using SparseArrays
 
-import Base: ==, diff, hash
-
 export
     AbstractDifference,
     MatrixDifference,

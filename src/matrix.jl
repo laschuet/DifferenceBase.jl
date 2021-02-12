@@ -10,11 +10,11 @@ struct MatrixDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray} <
 end
 
 # Matrix difference equality operator
-==(a::MatrixDifference, b::MatrixDifference) =
-    (a.modvals == b.modvals && a.addvals == b.addvals && a.remvals == b.remvals)
+Base.:(==)(a::MatrixDifference, b::MatrixDifference) =
+    a.modvals == b.modvals && a.addvals == b.addvals && a.remvals == b.remvals
 
 # Matrix difference hash code
-hash(a::MatrixDifference, h::UInt) =
+Base.hash(a::MatrixDifference, h::UInt) =
     hash(a.modvals, hash(a.addvals, hash(a.remvals,
         hash(:MatrixDifference, h))))
 
@@ -46,7 +46,7 @@ Compute the difference between matrix `A` and matrix `B`, and return a tuple
 containing the elements that have been modified, added (per row and column), and
 removed (per row and column).
 """
-function diff(A::AbstractMatrix, B::AbstractMatrix)
+function Base.diff(A::AbstractMatrix, B::AbstractMatrix)
     ia = collect(1:size(A, 1))
     ja = collect(1:size(A, 2))
     ib = collect(1:size(B, 1))
@@ -63,8 +63,8 @@ of `A`, and the vector `jb` represents the column numbers of `B` etc. The
 position of each vector element refers to the row index (or column index
 respectively) of `A` or `B`.
 """
-function diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
-            ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
+function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
+                ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
     if size(A) == (0, 0) || size(B) == (0, 0)
         T = promote_type(eltype(A), eltype(B))
         modvals = sparse([], [], T[])
