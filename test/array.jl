@@ -33,13 +33,12 @@
         b = [2, 3, 5, 7]
         ia = [1, 2, 5]
         ib = [2, 3, 5, 7]
-        E = Vector(undef, 0)
-        @test diff(a, a, ia, ia) == VectorDifference(sparse([0, 0, 0]), E, E)
+        @test diff(a, a, ia, ia) == VectorDifference(sparse([0, 0, 0]), [], [])
         @test diff(a, b, ia, ib) == VectorDifference(sparse([0, 0]), [3, 7], [1])
         @test diff(b, a, ib, ia) == VectorDifference(sparse([0, 0]), [1], [3, 7])
-        @test diff(a, a) == VectorDifference(sparse([0, 0, 0]), E, E)
-        @test diff(a, b) == VectorDifference(sparse([-1, -1, 0]), [7], E)
-        @test diff(b, a) == VectorDifference(sparse([1, 1, 0]), E, [7])
+        @test diff(a, a) == VectorDifference(sparse([0, 0, 0]), [], [])
+        @test diff(a, b) == VectorDifference(sparse([-1, -1, 0]), [7], [])
+        @test diff(b, a) == VectorDifference(sparse([1, 1, 0]), [], [7])
     end
 
     @testset "matrix difference" begin
@@ -49,11 +48,10 @@
         ja = [2, 8, 11]
         ib = [1, 8]
         jb = [2, 3, 4, 11]
-        E = Vector(undef, 0)
-        @test diff(A, A, ia, ja, ia, ja) == MatrixDifference(sparse([0 0 0; 0 0 0; 0 0 0]), E, E)
+        @test diff(A, A, ia, ja, ia, ja) == MatrixDifference(sparse([0 0 0; 0 0 0; 0 0 0]), [], [])
         @test diff(A, B, ia, ja, ib, jb) == MatrixDifference(sparse([0 0]), [1, 1, 1, 1, 1, 1], [0, 0, 0, 1, 0, 0, 1])
         @test diff(B, A, ib, jb, ia, ja) == MatrixDifference(sparse([0 0]), [0, 0, 0, 1, 0, 0, 1], [1, 1, 1, 1, 1, 1])
-        @test diff(A, A) == MatrixDifference(sparse([0 0 0; 0 0 0; 0 0 0]), E, E)
+        @test diff(A, A) == MatrixDifference(sparse([0 0 0; 0 0 0; 0 0 0]), [], [])
         @test diff(A, B) == MatrixDifference(sparse([0 -1 0; -1 0 -1]), [1, 1], [0, 0, 1])
         @test diff(B, A) == MatrixDifference(sparse([0 1 0; 1 0 1]), [0, 0, 1], [1, 1])
     end
