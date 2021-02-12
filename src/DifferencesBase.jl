@@ -12,9 +12,7 @@ export
     modified,
     removed
 
-include("difference.jl")
-include("matrix.jl")
-include("namedtuple.jl")
-include("set.jl")
+include("types.jl")
+include("differences.jl")
 
 end # module

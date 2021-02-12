@@ -1,45 +1,4 @@
 """
-    MatrixDifference{Tm<:AbstracArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
-
-Matrix difference.
-"""
-struct MatrixDifference{Tm<:AbstractArray,Ta<:AbstractArray,Tr<:AbstractArray} <: AbstractDifference
-    modvals::Tm
-    addvals::Ta
-    remvals::Tr
-end
-
-# Matrix difference equality operator
-Base.:(==)(a::MatrixDifference, b::MatrixDifference) =
-    a.modvals == b.modvals && a.addvals == b.addvals && a.remvals == b.remvals
-
-# Matrix difference hash code
-Base.hash(a::MatrixDifference, h::UInt) =
-    hash(a.modvals, hash(a.addvals, hash(a.remvals,
-        hash(:MatrixDifference, h))))
-
-"""
-    added(a::MatrixDifference)
-
-Access the added elements.
-"""
-added(a::MatrixDifference) = a.addvals
-
-"""
-    removed(a::MatrixDifference)
-
-Access the removed elements.
-"""
-removed(a::MatrixDifference) = a.remvals
-
-"""
-    modified(a::MatrixDifference)
-
-Access the modified elements.
-"""
-modified(a::MatrixDifference) = a.modvals
-
-"""
     diff(A::AbstractMatrix, B::AbstractMatrix)
 
 Compute the difference between matrix `A` and matrix `B`, and return a tuple
@@ -101,3 +60,56 @@ function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
 
     return MatrixDifference(modvals, addvals, remvals)
 end
+
+"""
+    diff(a::NamedTuple, b::NamedTuple)
+
+Compute the difference between named tuple `a` and named tuple `b`, and return a
+tuple containing the unique elements that have been modified, added, and
+removed.
+"""
+function Base.diff(a::NamedTuple, b::NamedTuple)
+    modnames = intersect(keys(a), keys(b))
+    addnames = setdiff(keys(b), keys(a))
+    remnames = setdiff(keys(a), keys(b))
+
+    # Compute modified values
+    modvalues = []
+    for n in modnames
+        typeof(a[n]) != typeof(b[n]) && throw(ArgumentError("type of values of common names in `a` and `b` must match"))
+        v = typeof(a[n]) <: Number ? a[n] - b[n] : diff(a[n], b[n])
+        push!(modvalues, v)
+    end
+    modvals = (; zip(modnames, modvalues)...)
+
+    # Compute added values
+    addvalues = []
+    for n in addnames
+        push!(addvalues, b[n])
+    end
+    addvals = (; zip(addnames, addvalues)...)
+
+    # Compute removed values
+    remvalues = []
+    for n in remnames
+        push!(remvalues, a[n])
+    end
+    remvals = (; zip(remnames, remvalues)...)
+
+    return NamedTupleDifference(modvals, addvals, remvals)
+end
+
+"""
+    diff(a::AbstractSet, b::AbstractSet)
+
+Compute the difference between set `a` and set `b`, and return a tuple
+containing the unique elements that have been shared, added, and removed.
+
+# Examples
+```jldoctest
+julia> diff(Set([1, 2, 3, 3]), Set([4, 2, 1]))
+(Set([1, 2]), Set([4]), Set([3]))
+```
+"""
+Base.diff(a::AbstractSet, b::AbstractSet) =
+    SetDifference(intersect(a, b), setdiff(b, a), setdiff(a, b))
