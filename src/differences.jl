@@ -66,14 +66,6 @@ respectively) of `A` or `B`.
 """
 function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
                 ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
-    if size(A) == (0, 0) || size(B) == (0, 0)
-        T = promote_type(eltype(A), eltype(B))
-        modvals = sparse([], [], T[])
-        addvals = view(Vector{T}(undef, 0), :)
-        remvals = view(Vector{T}(undef, 0), :)
-        return MatrixDifference(modvals, addvals, remvals)
-    end
-
     iamap = Dict(zip(ia, 1:length(ia)))
     jamap = Dict(zip(ja, 1:length(ja)))
     ibmap = Dict(zip(ib, 1:length(ib)))
