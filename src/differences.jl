@@ -18,6 +18,15 @@ row index of `a` or `b`.
 """
 function Base.diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector,
                 ib::AbstractVector)
+    if length(a) == 0 || length(b) == 0
+        T = promote_type(eltype(a), eltype(b))
+        vab = sparse(view(T[], :))
+        va = view(a, :)
+        vb = view(b, :)
+        length(a) == 0 && return VectorDifference(vab, vb, va)
+        length(b) == 0 && return VectorDifference(vab, va, vb)
+    end
+
     mapa = Dict(zip(ia, 1:length(ia)))
     mapb = Dict(zip(ib, 1:length(ib)))
 
@@ -66,6 +75,15 @@ respectively) of `A` or `B`.
 """
 function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
                 ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
+    if size(A) == (0, 0) || size(B) == (0, 0)
+        T = promote_type(eltype(A), eltype(B))
+        vab = sparse(view(T[], :))
+        va = view(A, :)
+        vb = view(B, :)
+        size(A) == (0, 0) && return MatrixDifference(vab, vb, va)
+        size(B) == (0, 0) && return MatrixDifference(vab, va, vb)
+    end
+
     iamap = Dict(zip(ia, 1:length(ia)))
     jamap = Dict(zip(ja, 1:length(ja)))
     ibmap = Dict(zip(ib, 1:length(ib)))

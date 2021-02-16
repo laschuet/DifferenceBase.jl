@@ -39,6 +39,10 @@
         @test diff(a, a) == VectorDifference(sparse([0, 0, 0]), [], [])
         @test diff(a, b) == VectorDifference(sparse([-1, -1, 0]), [7], [])
         @test diff(b, a) == VectorDifference(sparse([1, 1, 0]), [], [7])
+
+        @test diff([], []) == VectorDifference(sparse([]), [], [])
+        @test diff([], a) == VectorDifference(sparse([]), a, [])
+        @test diff(a, []) == VectorDifference(sparse([]), a, [])
     end
 
     @testset "matrix difference" begin
@@ -54,5 +58,10 @@
         @test diff(A, A) == MatrixDifference(sparse([0, 0, 0, 0, 0, 0, 0, 0, 0]), [], [])
         @test diff(A, B) == MatrixDifference(sparse([0, -1, -1, 0, 0, -1]), [1, 1], [0, 0, 1])
         @test diff(B, A) == MatrixDifference(sparse([0, 1, 1, 0, 0, 1]), [0, 0, 1], [1, 1])
+
+        E = Matrix(undef, 0, 0)
+        @test diff(E, E) == MatrixDifference(sparse([]), [], [])
+        @test diff(E, A) == MatrixDifference(sparse([]), vec(A), vec(E))
+        @test diff(A, E) == MatrixDifference(sparse([]), vec(A), vec(E))
     end
 end
