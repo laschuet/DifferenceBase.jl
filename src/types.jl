@@ -77,6 +77,27 @@ function Base.hash(a::T, h::UInt) where {T<:AbstractDifference}
 end
 
 """
+    added_indices(a::Union{VectorDifference,MatrixDifference})
+
+Access the added indices.
+"""
+added_indices(a::Union{VectorDifference,MatrixDifference}) = a.addinds
+
+"""
+    removed_indices(a::Union{VectorDifference,MatrixDifference})
+
+Access the removed indices.
+"""
+removed_indices(a::Union{VectorDifference,MatrixDifference}) = a.reminds
+
+"""
+    modified_indices(a::Union{VectorDifference,MatrixDifference})
+
+Access the modified indices.
+"""
+modified_indices(a::Union{VectorDifference,MatrixDifference}) = a.modinds
+
+"""
     added(a::AbstractDifference)
 
 Access the added elements.

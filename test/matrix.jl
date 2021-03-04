@@ -43,6 +43,9 @@
     end
 
     @testset "accessors" begin
+        @test modified_indices(a) == modinds
+        @test added_indices(a) == addinds
+        @test removed_indices(a) == reminds
         @test modified(a) == modvals
         @test added(a) == addvals
         @test removed(a) == remvals
