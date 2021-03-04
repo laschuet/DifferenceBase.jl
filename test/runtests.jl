@@ -3,7 +3,8 @@ using SparseArrays
 using Test
 
 @testset "DifferencesBase" begin
-    include("array.jl")
+    include("vector.jl")
+    include("matrix.jl")
     include("namedtuple.jl")
     include("set.jl")
 end

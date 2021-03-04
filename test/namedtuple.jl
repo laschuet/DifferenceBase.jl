@@ -29,7 +29,7 @@
     @testset "difference" begin
         a = (x=1,)
         b = (x=(s=1, t=2),)
-        c = (x=[1 2],)
+        c = (x=[1, 2],)
         d = (x=2, y=1)
 
         @test diff(a, a) == NamedTupleDifference(
@@ -43,7 +43,7 @@
             NamedTuple(),
         )
         @test diff(c, c) == NamedTupleDifference(
-            (x=ArrayDifference([0, 0], [], []),),
+            (x=VectorDifference([1, 2], Int[], Int[], [0, 0], [], []),),
             NamedTuple(),
             NamedTuple(),
         )

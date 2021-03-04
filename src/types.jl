@@ -6,17 +6,32 @@ Supertype for differences.
 abstract type AbstractDifference end
 
 """
-    ArrayDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
+    VectorDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
 
-Array difference.
+Vector difference.
 """
-struct ArrayDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
+struct VectorDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
+    modinds::Vector{Int}
+    addinds::Vector{Int}
+    reminds::Vector{Int}
     modvals::Tm
     addvals::Ta
     remvals::Tr
 end
-const VectorDifference = ArrayDifference
-const MatrixDifference = ArrayDifference
+
+"""
+    MatrixDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
+
+Matrix difference.
+"""
+struct MatrixDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector} <: AbstractDifference
+    modinds::NTuple{2,Vector{Int}}
+    addinds::NTuple{2,Vector{Int}}
+    reminds::NTuple{2,Vector{Int}}
+    modvals::Tm
+    addvals::Ta
+    remvals::Tr
+end
 
 """
     NamedTupleDifference <: AbstractDifference
@@ -76,11 +91,11 @@ Access the removed elements.
 removed(a::AbstractDifference) = a.remvals
 
 """
-    modified(a::Union{ArrayDifference,NamedTupleDifference})
+    modified(a::Union{VectorDifference,MatrixDifference,NamedTupleDifference})
 
 Access the modified elements.
 """
-modified(a::Union{ArrayDifference,NamedTupleDifference}) = a.modvals
+modified(a::Union{VectorDifference,MatrixDifference,NamedTupleDifference}) = a.modvals
 
 """
     common(a::SetDifference)

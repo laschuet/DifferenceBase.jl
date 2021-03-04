@@ -16,37 +16,38 @@ vectors `a` and `b`. The vectors `ia` and `ib` represent the row numbers of
 `a` and `b` respectively. The position of each vector element refers to the
 row index of `a` or `b`.
 """
-function Base.diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector,
+function Base.diff( a::AbstractVector, b::AbstractVector, ia::AbstractVector,
                 ib::AbstractVector)
     if length(a) == 0 || length(b) == 0
         T = promote_type(eltype(a), eltype(b))
         vab = sparse(view(T[], :))
         va = view(a, :)
         vb = view(b, :)
-        length(a) == 0 && return VectorDifference(vab, vb, va)
-        length(b) == 0 && return VectorDifference(vab, va, vb)
+        e = Int[]
+        length(a) == 0 && return VectorDifference(e, e, e, vab, vb, va)
+        length(b) == 0 && return VectorDifference(e, e, e, vab, va, vb)
     end
 
     mapa = Dict(zip(ia, 1:length(ia)))
     mapb = Dict(zip(ib, 1:length(ib)))
 
     # Compute modified values
-    i = intersect(ia, ib)
-    modia = getindex.(Ref(mapa), i)
-    modib = getindex.(Ref(mapb), i)
-    modvals = sparse(view(a, modia) - view(b, modib))
+    modinds = intersect(ia, ib)
+    mapped_modindsa = getindex.(Ref(mapa), modinds)
+    mapped_modindsb = getindex.(Ref(mapb), modinds)
+    modvals = sparse(view(a, mapped_modindsa) - view(b, mapped_modindsb))
 
     # Compute added values
-    addi = setdiff(ib, ia)
-    addinds = getindex.(Ref(mapb), addi)
-    addvals = view(b, addinds)
+    addinds = setdiff(ib, ia)
+    mapped_addinds = getindex.(Ref(mapb), addinds)
+    addvals = view(b, mapped_addinds)
 
     # Compute removed values
-    remi = setdiff(ia, ib)
-    reminds = getindex.(Ref(mapa), remi)
-    remvals = view(a, reminds)
+    reminds = setdiff(ia, ib)
+    mapped_reminds = getindex.(Ref(mapa), reminds)
+    remvals = view(a, mapped_reminds)
 
-    return VectorDifference(modvals, addvals, remvals)
+    return VectorDifference(modinds, addinds, reminds, modvals, addvals, remvals)
 end
 
 """
@@ -80,37 +81,40 @@ function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
         vab = sparse(view(T[], :))
         va = view(A, :)
         vb = view(B, :)
-        size(A) == (0, 0) && return MatrixDifference(vab, vb, va)
-        size(B) == (0, 0) && return MatrixDifference(vab, va, vb)
+        e = Int[]
+        size(A) == (0, 0) && return MatrixDifference((e, e), (e, e), (e, e), vab, vb, va)
+        size(B) == (0, 0) && return MatrixDifference((e, e), (e, e), (e, e), vab, va, vb)
     end
 
-    iamap = Dict(zip(ia, 1:length(ia)))
-    jamap = Dict(zip(ja, 1:length(ja)))
-    ibmap = Dict(zip(ib, 1:length(ib)))
-    jbmap = Dict(zip(jb, 1:length(jb)))
+    mapia = Dict(zip(ia, 1:length(ia)))
+    mapja = Dict(zip(ja, 1:length(ja)))
+    mapib = Dict(zip(ib, 1:length(ib)))
+    mapjb = Dict(zip(jb, 1:length(jb)))
 
     # Compute modified values
     i = intersect(ia, ib)
     j = intersect(ja, jb)
-    ia2 = getindex.(Ref(iamap), i)
-    ja2 = getindex.(Ref(jamap), j)
-    ib2 = getindex.(Ref(ibmap), i)
-    jb2 = getindex.(Ref(jbmap), j)
+    ia2 = getindex.(Ref(mapia), i)
+    ja2 = getindex.(Ref(mapja), j)
+    ib2 = getindex.(Ref(mapib), i)
+    jb2 = getindex.(Ref(mapjb), j)
     modvals = sparse(vec(view(A, ia2, ja2) - view(B, ib2, jb2)))
 
     # Compute added values
+    addinds = (setdiff(ib, ia), setdiff(jb, ja))
     indicesb = CartesianIndices(B)
     modindicesb = CartesianIndex.(Iterators.product(ib2, jb2))
     addindices = setdiff(indicesb, modindicesb)
     addvals = view(B, addindices)
 
     # Compute removed values
+    reminds = (setdiff(ia, ib), setdiff(ja, jb))
     indicesa = CartesianIndices(A)
     modindicesa = CartesianIndex.(Iterators.product(ia2, ja2))
     remindices = setdiff(indicesa, modindicesa)
     remvals = view(A, remindices)
 
-    return MatrixDifference(modvals, addvals, remvals)
+    return MatrixDifference((i, j), addinds, reminds, modvals, addvals, remvals)
 end
 
 """
