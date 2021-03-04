@@ -5,7 +5,7 @@ Compute the difference between vector `a` and vector `b`, and return a tuple
 containing the elements that have been modified, added, and removed.
 """
 function Base.diff(a::AbstractVector, b::AbstractVector)
-    diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
+    return diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
 end
 
 """
@@ -16,16 +16,17 @@ vectors `a` and `b`. The vectors `ia` and `ib` represent the row numbers of
 `a` and `b` respectively. The position of each vector element refers to the
 row index of `a` or `b`.
 """
-function Base.diff( a::AbstractVector, b::AbstractVector, ia::AbstractVector,
-                ib::AbstractVector)
+function Base.diff(
+    a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector
+)
     if length(a) == 0 || length(b) == 0
         T = promote_type(eltype(a), eltype(b))
         vab = sparse(view(T[], :))
         va = view(a, :)
         vb = view(b, :)
-        e = Int[]
-        length(a) == 0 && return VectorDifference(e, e, e, vab, vb, va)
-        length(b) == 0 && return VectorDifference(e, e, e, vab, va, vb)
+        ei = Int[]
+        length(a) == 0 && return VectorDifference(ei, ei, ei, vab, vb, va)
+        length(b) == 0 && return VectorDifference(ei, ei, ei, vab, va, vb)
     end
 
     mapa = Dict(zip(ia, 1:length(ia)))
@@ -74,16 +75,24 @@ of `A`, and the vector `jb` represents the column numbers of `B` etc. The
 position of each vector element refers to the row index (or column index
 respectively) of `A` or `B`.
 """
-function Base.diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector,
-                ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
+function Base.diff(
+    A::AbstractMatrix,
+    B::AbstractMatrix,
+    ia::AbstractVector,
+    ja::AbstractVector,
+    ib::AbstractVector,
+    jb::AbstractVector,
+)
     if size(A) == (0, 0) || size(B) == (0, 0)
         T = promote_type(eltype(A), eltype(B))
         vab = sparse(view(T[], :))
         va = view(A, :)
         vb = view(B, :)
-        e = Int[]
-        size(A) == (0, 0) && return MatrixDifference((e, e), (e, e), (e, e), vab, vb, va)
-        size(B) == (0, 0) && return MatrixDifference((e, e), (e, e), (e, e), vab, va, vb)
+        ei = Int[]
+        size(A) == (0, 0) &&
+            return MatrixDifference((ei, ei), (ei, ei), (ei, ei), vab, vb, va)
+        size(B) == (0, 0) &&
+            return MatrixDifference((ei, ei), (ei, ei), (ei, ei), vab, va, vb)
     end
 
     mapia = Dict(zip(ia, 1:length(ia)))
@@ -132,7 +141,8 @@ function Base.diff(a::NamedTuple, b::NamedTuple)
     # Compute modified values
     modvalues = []
     for n in modnames
-        typeof(a[n]) != typeof(b[n]) && throw(ArgumentError("type of values of common names in `a` and `b` must match"))
+        typeof(a[n]) != typeof(b[n]) &&
+            throw(ArgumentError("type of values of common names in `a` and `b` must match"))
         v = typeof(a[n]) <: Number ? a[n] - b[n] : diff(a[n], b[n])
         push!(modvalues, v)
     end

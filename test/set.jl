@@ -5,8 +5,9 @@
 
     @testset "constructors" begin
         @test isa(a, SetDifference)
-        @test (a.comvals == Set([1]) && a.addvals == Set([2, 3])
-                && a.remvals == Set([4, 5]))
+        @test (
+            a.comvals == Set([1]) && a.addvals == Set([2, 3]) && a.remvals == Set([4, 5])
+        )
     end
 
     @testset "equality operator" begin

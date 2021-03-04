@@ -2,8 +2,7 @@ module DifferencesBase
 
 using SparseArrays
 
-export
-    AbstractDifference,
+export AbstractDifference,
     VectorDifference,
     MatrixDifference,
     NamedTupleDifference,

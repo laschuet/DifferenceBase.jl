@@ -5,8 +5,11 @@
 
     @testset "constructors" begin
         @test isa(a, NamedTupleDifference)
-        @test (a.modvals == (x1=1, x2=[0.0, 1.0]) && a.addvals == NamedTuple()
-                && a.remvals == (z=3,))
+        @test (
+            a.modvals == (x1=1, x2=[0.0, 1.0]) &&
+            a.addvals == NamedTuple() &&
+            a.remvals == (z=3,)
+        )
     end
 
     @testset "equality operator" begin
@@ -32,11 +35,7 @@
         c = (x=[1, 2],)
         d = (x=2, y=1)
 
-        @test diff(a, a) == NamedTupleDifference(
-            (x=0,),
-            NamedTuple(),
-            NamedTuple(),
-        )
+        @test diff(a, a) == NamedTupleDifference((x=0,), NamedTuple(), NamedTuple())
         @test diff(b, b) == NamedTupleDifference(
             (x=NamedTupleDifference((s=0, t=0), NamedTuple(), NamedTuple()),),
             NamedTuple(),

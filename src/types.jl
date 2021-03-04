@@ -68,7 +68,7 @@ function Base.:(==)(a::Ta, b::Tb) where {Ta<:AbstractDifference,Tb<:AbstractDiff
 end
 
 # Hash code
-function Base.hash(a::T, h::UInt) where T<:AbstractDifference
+function Base.hash(a::T, h::UInt) where {T<:AbstractDifference}
     hashval = hash(:T, h)
     for f in fieldnames(T)
         hashval = hash(getfield(a, f), hashval)
