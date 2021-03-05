@@ -101,29 +101,38 @@ function Base.diff(
     mapjb = Dict(zip(jb, 1:length(jb)))
 
     # Compute modified indices and values
-    i = intersect(ia, ib)
-    j = intersect(ja, jb)
-    ia2 = getindex.(Ref(mapia), i)
-    ja2 = getindex.(Ref(mapja), j)
-    ib2 = getindex.(Ref(mapib), i)
-    jb2 = getindex.(Ref(mapjb), j)
-    modvals = sparse(vec(view(A, ia2, ja2) - view(B, ib2, jb2)))
+    modindsi = intersect(ia, ib)
+    modindsj = intersect(ja, jb)
+    mapped_modindsia = getindex.(Ref(mapia), modindsi)
+    mapped_modindsja = getindex.(Ref(mapja), modindsj)
+    mapped_modindsib = getindex.(Ref(mapib), modindsi)
+    mapped_modindsjb = getindex.(Ref(mapjb), modindsj)
+    modvals = sparse(
+        vec(
+            view(A, mapped_modindsia, mapped_modindsja) -
+            view(B, mapped_modindsib, mapped_modindsjb),
+        ),
+    )
 
     # Compute added indices and values
     addinds = (setdiff(ib, ia), setdiff(jb, ja))
-    indicesb = CartesianIndices(B)
-    modindicesb = CartesianIndex.(Iterators.product(ib2, jb2))
-    addindices = setdiff(indicesb, modindicesb)
-    addvals = view(B, addindices)
+    mapped_indicesb = CartesianIndices(B)
+    mapped_modindicesb =
+        CartesianIndex.(Iterators.product(mapped_modindsib, mapped_modindsjb))
+    mapped_addindices = setdiff(mapped_indicesb, mapped_modindicesb)
+    addvals = view(B, mapped_addindices)
 
     # Compute removed indices and values
     reminds = (setdiff(ia, ib), setdiff(ja, jb))
-    indicesa = CartesianIndices(A)
-    modindicesa = CartesianIndex.(Iterators.product(ia2, ja2))
-    remindices = setdiff(indicesa, modindicesa)
-    remvals = view(A, remindices)
+    mapped_indicesa = CartesianIndices(A)
+    mapped_modindicesa =
+        CartesianIndex.(Iterators.product(mapped_modindsia, mapped_modindsja))
+    mapped_remindices = setdiff(mapped_indicesa, mapped_modindicesa)
+    remvals = view(A, mapped_remindices)
 
-    return MatrixDifference((i, j), addinds, reminds, modvals, addvals, remvals)
+    return MatrixDifference(
+        (modindsi, modindsj), addinds, reminds, modvals, addvals, remvals
+    )
 end
 
 """
