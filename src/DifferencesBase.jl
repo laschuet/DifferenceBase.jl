@@ -17,5 +17,6 @@ export AbstractDifference,
 
 include("types.jl")
 include("differences.jl")
+include("show.jl")
 
 end # module

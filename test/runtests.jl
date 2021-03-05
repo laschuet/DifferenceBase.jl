@@ -7,4 +7,5 @@ using Test
     include("matrix.jl")
     include("namedtuple.jl")
     include("set.jl")
+    include("show.jl")
 end
