@@ -32,18 +32,18 @@ function Base.diff(
     mapa = Dict(zip(ia, 1:length(ia)))
     mapb = Dict(zip(ib, 1:length(ib)))
 
-    # Compute modified values
+    # Compute modified indices and values
     modinds = intersect(ia, ib)
     mapped_modindsa = getindex.(Ref(mapa), modinds)
     mapped_modindsb = getindex.(Ref(mapb), modinds)
     modvals = sparse(view(a, mapped_modindsa) - view(b, mapped_modindsb))
 
-    # Compute added values
+    # Compute added indices and values
     addinds = setdiff(ib, ia)
     mapped_addinds = getindex.(Ref(mapb), addinds)
     addvals = view(b, mapped_addinds)
 
-    # Compute removed values
+    # Compute removed indices and values
     reminds = setdiff(ia, ib)
     mapped_reminds = getindex.(Ref(mapa), reminds)
     remvals = view(a, mapped_reminds)
@@ -100,7 +100,7 @@ function Base.diff(
     mapib = Dict(zip(ib, 1:length(ib)))
     mapjb = Dict(zip(jb, 1:length(jb)))
 
-    # Compute modified values
+    # Compute modified indices and values
     i = intersect(ia, ib)
     j = intersect(ja, jb)
     ia2 = getindex.(Ref(mapia), i)
@@ -109,14 +109,14 @@ function Base.diff(
     jb2 = getindex.(Ref(mapjb), j)
     modvals = sparse(vec(view(A, ia2, ja2) - view(B, ib2, jb2)))
 
-    # Compute added values
+    # Compute added indices and values
     addinds = (setdiff(ib, ia), setdiff(jb, ja))
     indicesb = CartesianIndices(B)
     modindicesb = CartesianIndex.(Iterators.product(ib2, jb2))
     addindices = setdiff(indicesb, modindicesb)
     addvals = view(B, addindices)
 
-    # Compute removed values
+    # Compute removed indices and values
     reminds = (setdiff(ia, ib), setdiff(ja, jb))
     indicesa = CartesianIndices(A)
     modindicesa = CartesianIndex.(Iterators.product(ia2, ja2))
