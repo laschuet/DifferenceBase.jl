@@ -1,13 +1,4 @@
 @testset "show" begin
-    @testset "set" begin
-        a = SetDifference(Set([]), Set([]), Set([]))
-        @test sprint(show, MIME("text/plain"), a) == """
-        SetDifference with values:
-         common: Set{Any}()
-         added: Set{Any}()
-         removed: Set{Any}()"""
-    end
-
     @testset "vector" begin
         a = VectorDifference([3], [1], [2], [-1], [3], [4])
         @test sprint(show, MIME("text/plain"), a) == """
@@ -41,5 +32,14 @@
          modified: (x1 = 1, x2 = [0.0, 1.0])
          added: NamedTuple()
          removed: (z = 3,)"""
+    end
+
+    @testset "set" begin
+        a = SetDifference(Set([]), Set([]), Set([]))
+        @test sprint(show, MIME("text/plain"), a) == """
+        SetDifference with values:
+         common: Set{Any}()
+         added: Set{Any}()
+         removed: Set{Any}()"""
     end
 end
