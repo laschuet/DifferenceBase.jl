@@ -12,7 +12,7 @@
         a = VectorDifference([3], [1], [2], [-1], [3], [4])
         @test sprint(show, MIME("text/plain"), a) == """
         VectorDifference with indices:
-         common: [3]
+         modified: [3]
          added: [1]
          removed: [2]
         and values:
@@ -25,7 +25,7 @@
         a = MatrixDifference(([1], [1]), ([2], [2]), ([3], [3]), [1], [2, 2], [3, 3])
         @test sprint(show, MIME("text/plain"), a) == """
         MatrixDifference with indices:
-         common: ([1], [1])
+         modified: ([1], [1])
          added: ([2], [2])
          removed: ([3], [3])
         and values:

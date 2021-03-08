@@ -2,7 +2,7 @@
 
 function Base.show(io::IO, ::MIME"text/plain", a::Union{VectorDifference,MatrixDifference})
     println(io, nameof(typeof(a)), " with indices:")
-    print(io, " common: ", a.modinds, "\n added: ", a.addinds, "\n removed: ", a.reminds)
+    print(io, " modified: ", a.modinds, "\n added: ", a.addinds, "\n removed: ", a.reminds)
     println(io, "\nand values:")
     println(io, " common: ", a.modvals)
     println(io, " added: ", a.addvals)
