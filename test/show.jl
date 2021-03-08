@@ -33,4 +33,13 @@
          added: [2, 2]
          removed: [3, 3]"""
     end
+
+    @testset "named tuple" begin
+        a = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (z=3,))
+        @test sprint(show, MIME("text/plain"), a) == """
+        NamedTupleDifference with values:
+         modified: (x1 = 1, x2 = [0.0, 1.0])
+         added: NamedTuple()
+         removed: (z = 3,)"""
+    end
 end

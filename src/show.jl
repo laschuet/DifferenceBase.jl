@@ -9,6 +9,13 @@ function Base.show(io::IO, ::MIME"text/plain", a::Union{VectorDifference,MatrixD
     print(io, " removed: ", a.remvals)
 end
 
+function Base.show(io::IO, ::MIME"text/plain", a::NamedTupleDifference)
+    println(io, nameof(typeof(a)), " with values:")
+    println(io, " modified: ", a.modvals)
+    println(io, " added: ", a.addvals)
+    print(io, " removed: ", a.remvals)
+end
+
 function Base.show(io::IO, ::MIME"text/plain", a::SetDifference)
     println(io, nameof(typeof(a)), " with values:")
     println(io, " common: ", a.comvals)
