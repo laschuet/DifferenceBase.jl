@@ -1,13 +1,14 @@
 @testset "set difference" begin
-    a = SetDifference(Set([1]), Set([2, 3]), Set([4, 5]))
-    b = SetDifference(Set([1]), Set([2, 3]), Set([4, 5]))
-    c = SetDifference(Set([1]), Set([2, 3]), Set([4, 5]))
+    comvals = Set([1])
+    addvals = Set([2, 3])
+    remvals = Set([4, 5])
+    a = SetDifference(comvals, addvals, remvals)
+    b = SetDifference(comvals, addvals, remvals)
+    c = SetDifference(comvals, addvals, remvals)
 
     @testset "constructors" begin
         @test isa(a, SetDifference)
-        @test (
-            a.comvals == Set([1]) && a.addvals == Set([2, 3]) && a.remvals == Set([4, 5])
-        )
+        @test a.comvals == comvals && a.addvals == addvals && a.remvals == remvals
     end
 
     @testset "equality operator" begin
@@ -22,15 +23,16 @@
     end
 
     @testset "accessors" begin
-        @test common(a) == Set([1])
-        @test added(a) == Set([2, 3])
-        @test removed(a) == Set([4, 5])
+        @test common(a) == comvals
+        @test added(a) == addvals
+        @test removed(a) == remvals
     end
 
     @testset "difference" begin
         a = Set([1, 2, 3, 3])
         b = Set([4, 2, 1])
-        @test diff(a, a) == SetDifference(Set([1, 2, 3]), Set(Int[]), Set(Int[]))
+        ei = Int[]
+        @test diff(a, a) == SetDifference(Set([1, 2, 3]), Set(ei), Set(ei))
         @test diff(a, b) == SetDifference(Set([1, 2]), Set([4]), Set([3]))
         @test diff(b, a) == SetDifference(Set([2, 1]), Set([3]), Set([4]))
     end
