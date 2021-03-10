@@ -1,8 +1,7 @@
 """
     diff(a::AbstractVector, b::AbstractVector)
 
-Compute the difference between vector `a` and vector `b`, and return a tuple
-containing the elements that have been modified, added, and removed.
+Compute the difference between vector `a` and vector `b`, and return a `VectorDifference`.
 """
 Base.diff(a::AbstractVector, b::AbstractVector) =
     diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
@@ -10,10 +9,9 @@ Base.diff(a::AbstractVector, b::AbstractVector) =
 """
     diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector)
 
-Like [`diff`](@ref), but provide integer vectors that number the rows of the
-vectors `a` and `b`. The vectors `ia` and `ib` represent the row numbers of
-`a` and `b` respectively. The position of each vector element refers to the
-row index of `a` or `b`.
+Like [`diff`](@ref), but provide integer vectors that number the rows of the vectors `a`
+and `b`. The vectors `ia` and `ib` represent the row numbers of `a` and `b` respectively.
+The position of each vector element refers to the row index of `a` or `b`.
 """
 function Base.diff(
     a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector
@@ -53,9 +51,7 @@ end
 """
     diff(A::AbstractMatrix, B::AbstractMatrix)
 
-Compute the difference between matrix `A` and matrix `B`, and return a tuple
-containing the elements that have been modified, added (per row and column), and
-removed (per row and column).
+Compute the difference between matrix `A` and matrix `B`, and return a `MatrixDifference`.
 """
 function Base.diff(A::AbstractMatrix, B::AbstractMatrix)
     ia = collect(1:size(A, 1))
@@ -68,11 +64,10 @@ end
 """
     diff(A::AbstractMatrix, B::AbstractMatrix, ia::AbstractVector, ja::AbstractVector, ib::AbstractVector, jb::AbstractVector)
 
-Like [`diff`](@ref), but provide integer vectors that number the rows and
-columns of the matrices `A` and `B`. The vector `ia` represents the row numbers
-of `A`, and the vector `jb` represents the column numbers of `B` etc. The
-position of each vector element refers to the row index (or column index
-respectively) of `A` or `B`.
+Like [`diff`](@ref), but provide integer vectors that number the rows and columns of the
+matrices `A` and `B`. The vector `ia` represents the row numbers of `A`, and the vector `jb`
+represents the column numbers of `B` etc. The position of each vector element refers to the
+row index (or column index respectively) of `A` or `B`.
 """
 function Base.diff(
     A::AbstractMatrix,
@@ -137,7 +132,8 @@ end
 """
     diff(a::AbstractDict, b::AbstractDict)
 
-Compute the difference between dictionary `a` and dictionary `b`.
+Compute the difference between dictionary `a` and dictionary `b`, and return a
+`DictDifference`.
 """
 function Base.diff(a::AbstractDict, b::AbstractDict)
     keysa = keys(a)
@@ -173,8 +169,7 @@ end
     diff(a::NamedTuple, b::NamedTuple)
 
 Compute the difference between named tuple `a` and named tuple `b`, and return a
-tuple containing the unique elements that have been modified, added, and
-removed.
+`NamedTupleDifference`.
 """
 function Base.diff(a::NamedTuple, b::NamedTuple)
     modnames = intersect(keys(a), keys(b))
@@ -211,8 +206,7 @@ end
 """
     diff(a::AbstractSet, b::AbstractSet)
 
-Compute the difference between set `a` and set `b`, and return a tuple
-containing the unique elements that have been shared, added, and removed.
+Compute the difference between set `a` and set `b`, and return a `SetDifference`.
 
 # Examples
 ```jldoctest
