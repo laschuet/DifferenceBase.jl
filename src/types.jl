@@ -34,7 +34,7 @@ struct MatrixDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector
 end
 
 """
-    NamedTupleDifference <: AbstractDifference
+    NamedTupleDifference{Tm<:NamedTuple,Ta<:NamedTuple,Tr<:NamedTuple} <: AbstractDifference
 
 Named tuple difference.
 """
@@ -45,7 +45,7 @@ struct NamedTupleDifference{Tm<:NamedTuple,Ta<:NamedTuple,Tr<:NamedTuple} <: Abs
 end
 
 """
-    SetDifference{T} <: AbstractDifference
+    SetDifference{Tc,Ta,Tr} <: AbstractDifference
 
 Set difference.
 """
