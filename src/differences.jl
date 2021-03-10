@@ -4,9 +4,8 @@
 Compute the difference between vector `a` and vector `b`, and return a tuple
 containing the elements that have been modified, added, and removed.
 """
-function Base.diff(a::AbstractVector, b::AbstractVector)
-    return diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
-end
+Base.diff(a::AbstractVector, b::AbstractVector) =
+    diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
 
 """
     diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector)
