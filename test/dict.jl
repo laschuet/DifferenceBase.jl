@@ -46,4 +46,12 @@
         @test diff(a, d) == DictDifference(Dict(:x=>-1), Dict(:y=>1), ed)
         @test diff(d, a) == DictDifference(Dict(:x=>1), ed, Dict(:y=>1))
     end
+
+    @testset "math" begin
+        a = Dict(:x=>1, :y=>2)
+        b = Dict(:y=>4, :z=>8)
+        d = DictDifference(Dict(:y=>2), Dict(:z=>8), Dict(:x=>1))
+        @test a + d == b
+        @test d + a == b
+    end
 end

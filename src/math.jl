@@ -3,12 +3,14 @@
 Base.:(+)(::AbstractSet, d::SetDifference) = union(d.comvals, d.addvals)
 Base.:(+)(d::SetDifference, a::AbstractSet) = +(a, d)
 
-function Base.:(+)(a::NamedTuple, d::NamedTupleDifference)
+function Base.:(+)(a::AbstractDict, d::DictDifference)
     result = d.addvals
     modkeys = keys(d.modvals)
-    for key in modkeys
-        result = merge(result, [key => a[key] + d.modvals[key]])
+    for k in modkeys
+        typeof(a[k]) != typeof(d.modvals[k]) &&
+            throw(ArgumentError("type of values of common keys in `a` and `d` must match"))
+        result = merge(result, Dict(k=>a[k] + d.modvals[k]))
     end
     return result
 end
-Base.:(+)(d::NamedTupleDifference, a::NamedTuple) = +(a, d)
+Base.:(+)(d::DictDifference, a::AbstractDict) = +(a, d)
