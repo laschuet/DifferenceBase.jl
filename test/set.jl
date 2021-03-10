@@ -34,4 +34,12 @@
         @test diff(a, b) == SetDifference(Set([1, 2]), Set([4]), Set([3]))
         @test diff(b, a) == SetDifference(Set([2, 1]), Set([3]), Set([4]))
     end
+
+    @testset "math" begin
+        a = Set([1, 5, 3])
+        b = Set([1, 4, 2, 3])
+        d = SetDifference(Set([1, 3]), Set([4, 2]), Set([5]))
+        @test a + d == b
+        @test d + a == b
+    end
 end
