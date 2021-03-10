@@ -34,6 +34,17 @@ struct MatrixDifference{Tm<:AbstractVector,Ta<:AbstractVector,Tr<:AbstractVector
 end
 
 """
+    DictDifference{Tm<:AbstractDict,Ta<:AbstractDict,Tr<:AbstractDict} <: AbstractDifference
+
+Dictionary difference.
+"""
+struct DictDifference{Tm<:AbstractDict,Ta<:AbstractDict,Tr<:AbstractDict} <: AbstractDifference
+    modvals::Tm
+    addvals::Ta
+    remvals::Tr
+end
+
+"""
     NamedTupleDifference{Tm<:NamedTuple,Ta<:NamedTuple,Tr<:NamedTuple} <: AbstractDifference
 
 Named tuple difference.
@@ -112,11 +123,12 @@ Access the removed elements.
 removed(a::AbstractDifference) = a.remvals
 
 """
-    modified(a::Union{VectorDifference,MatrixDifference,NamedTupleDifference})
+    modified(a::Union{VectorDifference,MatrixDifference,DictDifference,NamedTupleDifference})
 
 Access the modified elements.
 """
-modified(a::Union{VectorDifference,MatrixDifference,NamedTupleDifference}) = a.modvals
+modified(a::Union{VectorDifference,MatrixDifference,DictDifference,NamedTupleDifference}) =
+    a.modvals
 
 """
     common(a::SetDifference)

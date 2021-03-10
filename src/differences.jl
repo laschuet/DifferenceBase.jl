@@ -136,6 +136,41 @@ function Base.diff(
 end
 
 """
+    diff(a::AbstractDict, b::AbstractDict)
+
+Compute the difference between dictionary `a` and dictionary `b`.
+"""
+function Base.diff(a::AbstractDict, b::AbstractDict)
+    keysa = keys(a)
+    keysb = keys(b)
+    modkeys = intersect(keysa, keysb)
+    addkeys = setdiff(keysb, keysa)
+    remkeys = setdiff(keysa, keysb)
+
+    # Compute modified values
+    modvals = Dict()
+    for k in modkeys
+        typeof(a[k]) != typeof(b[k]) &&
+            throw(ArgumentError("type of values of common keys in `a` and `b` must match"))
+        modvals[k] = typeof(a[k]) <: Number ? a[k] - b[k] : diff(a[k], b[k])
+    end
+
+    # Compute added values
+    addvals = Dict()
+    for k in addkeys
+        addvals[k] = b[k]
+    end
+
+    # Compute removed values
+    remvals = Dict()
+    for k in remkeys
+        remvals[k] = a[k]
+    end
+
+    return DictDifference(modvals, addvals, remvals)
+end
+
+"""
     diff(a::NamedTuple, b::NamedTuple)
 
 Compute the difference between named tuple `a` and named tuple `b`, and return a

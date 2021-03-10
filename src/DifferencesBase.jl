@@ -5,6 +5,7 @@ using SparseArrays
 export AbstractDifference,
     VectorDifference,
     MatrixDifference,
+    DictDifference,
     NamedTupleDifference,
     SetDifference,
     added_indices,

@@ -25,11 +25,20 @@
          removed: [3, 3]"""
     end
 
+    @testset "dictionary" begin
+        a = DictDifference(Dict(:x=>1, :y=>[0.0, 1.0]), Dict(), Dict(:z=>3))
+        @test sprint(show, MIME("text/plain"), a) == """
+        DictDifference with values:
+         modified: Dict{Symbol,Any}(:y => [0.0, 1.0],:x => 1)
+         added: Dict{Any,Any}()
+         removed: Dict(:z => 3)"""
+    end
+
     @testset "named tuple" begin
-        a = NamedTupleDifference((x1=1, x2=[0.0, 1.0]), NamedTuple(), (z=3,))
+        a = NamedTupleDifference((x=1, y=[0.0, 1.0]), NamedTuple(), (z=3,))
         @test sprint(show, MIME("text/plain"), a) == """
         NamedTupleDifference with values:
-         modified: (x1 = 1, x2 = [0.0, 1.0])
+         modified: (x = 1, y = [0.0, 1.0])
          added: NamedTuple()
          removed: (z = 3,)"""
     end
