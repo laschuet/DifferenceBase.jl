@@ -41,5 +41,6 @@
         d = SetDifference(Set([4, 2]), Set([5]))
         @test a + d == b
         @test d + a == b
+        @test b - d == a
     end
 end

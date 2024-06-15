@@ -2,6 +2,7 @@
 
 Base.:(+)(a::AbstractSet, d::SetDifference) = setdiff(union(a, d.addvals), d.remvals)
 Base.:(+)(d::SetDifference, a::AbstractSet) = +(a, d)
+Base.:(-)(a::AbstractSet, d::SetDifference) = setdiff(union(a, d.remvals), d.addvals)
 
 function Base.:(+)(a::AbstractDict, d::DictDifference)
     result = d.addvals
