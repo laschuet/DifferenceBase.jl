@@ -56,12 +56,11 @@ struct NamedTupleDifference{Tm<:NamedTuple,Ta<:NamedTuple,Tr<:NamedTuple} <: Abs
 end
 
 """
-    SetDifference{Tc,Ta,Tr} <: AbstractDifference
+    SetDifference{Ta,Tr} <: AbstractDifference
 
 Set difference.
 """
-struct SetDifference{Tc,Ta,Tr} <: AbstractDifference
-    comvals::Set{Tc}
+struct SetDifference{Ta,Tr} <: AbstractDifference
     addvals::Set{Ta}
     remvals::Set{Tr}
 end
@@ -129,10 +128,3 @@ Access the modified elements.
 """
 modified(a::Union{VectorDifference,MatrixDifference,DictDifference,NamedTupleDifference}) =
     a.modvals
-
-"""
-    common(a::SetDifference)
-
-Access the common elements.
-"""
-common(a::SetDifference) = a.comvals

@@ -1,6 +1,6 @@
 # Addition operator
 
-Base.:(+)(::AbstractSet, d::SetDifference) = union(d.comvals, d.addvals)
+Base.:(+)(a::AbstractSet, d::SetDifference) = setdiff(union(a, d.addvals), d.remvals)
 Base.:(+)(d::SetDifference, a::AbstractSet) = +(a, d)
 
 function Base.:(+)(a::AbstractDict, d::DictDifference)

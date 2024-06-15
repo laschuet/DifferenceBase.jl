@@ -20,7 +20,6 @@ end
 
 function Base.show(io::IO, ::MIME"text/plain", a::SetDifference)
     println(io, nameof(typeof(a)), " with values:")
-    println(io, " common: ", a.comvals)
     println(io, " added: ", a.addvals)
     print(io, " removed: ", a.remvals)
 end

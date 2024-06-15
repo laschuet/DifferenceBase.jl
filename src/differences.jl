@@ -211,8 +211,8 @@ Compute the difference between set `a` and set `b`, and return a `SetDifference`
 # Examples
 ```jldoctest
 julia> diff(Set([1, 2, 3, 3]), Set([4, 2, 1]))
-(Set([1, 2]), Set([4]), Set([3]))
+(Set([4]), Set([3]))
 ```
 """
 Base.diff(a::AbstractSet, b::AbstractSet) =
-    SetDifference(intersect(a, b), setdiff(b, a), setdiff(a, b))
+    SetDifference(setdiff(b, a), setdiff(a, b))

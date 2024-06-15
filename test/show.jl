@@ -44,10 +44,9 @@
     end
 
     @testset "set" begin
-        a = SetDifference(Set([]), Set([]), Set([]))
+        a = SetDifference(Set([]), Set([]))
         @test sprint(show, MIME("text/plain"), a) == """
         SetDifference with values:
-         common: Set{Any}()
          added: Set{Any}()
          removed: Set{Any}()"""
     end
