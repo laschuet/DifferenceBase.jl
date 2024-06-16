@@ -10,7 +10,7 @@ function Base.:(+)(a::AbstractDict, d::DictDifference)
     for k in modkeys
         typeof(a[k]) != typeof(d.modvals[k]) &&
             throw(ArgumentError("type of values of common keys in `a` and `d` must match"))
-        result = merge(result, Dict(k=>a[k] + d.modvals[k]))
+        result = merge(result, Dict(k => a[k] + d.modvals[k]))
     end
     return result
 end

@@ -5,9 +5,7 @@
     modvals = [1, 2, 3, 4]
     addvals = [1, 2]
     remvals = [3, 4]
-    a = MatrixDifference(
-        modinds, addinds, reminds, modvals, view(addvals, :), view(remvals, :)
-    )
+    a = MatrixDifference(modinds, addinds, reminds, modvals, view(addvals, :), view(remvals, :))
     b = MatrixDifference(modinds, addinds, reminds, sparse(modvals), addvals, remvals)
     c = MatrixDifference(modinds, addinds, reminds, modvals, addvals, remvals)
 
@@ -63,41 +61,19 @@
         ei = Int[]
         se = sparse(e)
         @test diff(E, E) == MatrixDifference((ei, ei), (ei, ei), (ei, ei), se, e, e)
-        @test diff(E, A) ==
-              MatrixDifference((ei, ei), (ei, ei), (ei, ei), se, vec(A), vec(E))
-        @test diff(A, E) ==
-              MatrixDifference((ei, ei), (ei, ei), (ei, ei), se, vec(A), vec(E))
+        @test diff(E, A) == MatrixDifference((ei, ei), (ei, ei), (ei, ei), se, vec(A), vec(E))
+        @test diff(A, E) == MatrixDifference((ei, ei), (ei, ei), (ei, ei), se, vec(A), vec(E))
         @test diff(A, A) == MatrixDifference(
-            ([1, 2, 3], [1, 2, 3]),
-            (ei, ei),
-            (ei, ei),
-            sparse([0, 0, 0, 0, 0, 0, 0, 0, 0]),
-            e,
-            e,
+            ([1, 2, 3], [1, 2, 3]), (ei, ei), (ei, ei), sparse([0, 0, 0, 0, 0, 0, 0, 0, 0]), e, e
         )
         @test diff(A, B) == MatrixDifference(
-            ([1, 2], [1, 2, 3]),
-            (ei, [4]),
-            ([3], ei),
-            sparse([0, -1, -1, 0, 0, -1]),
-            [1, 1],
-            [0, 0, 1],
+            ([1, 2], [1, 2, 3]), (ei, [4]), ([3], ei), sparse([0, -1, -1, 0, 0, -1]), [1, 1], [0, 0, 1]
         )
         @test diff(B, A) == MatrixDifference(
-            ([1, 2], [1, 2, 3]),
-            ([3], ei),
-            (ei, [4]),
-            sparse([0, 1, 1, 0, 0, 1]),
-            [0, 0, 1],
-            [1, 1],
+            ([1, 2], [1, 2, 3]), ([3], ei), (ei, [4]), sparse([0, 1, 1, 0, 0, 1]), [0, 0, 1], [1, 1]
         )
         @test diff(A, A, ia, ja, ia, ja) == MatrixDifference(
-            ([1, 2, 5], [2, 8, 11]),
-            (ei, ei),
-            (ei, ei),
-            sparse([0, 0, 0, 0, 0, 0, 0, 0, 0]),
-            e,
-            e,
+            ([1, 2, 5], [2, 8, 11]), (ei, ei), (ei, ei), sparse([0, 0, 0, 0, 0, 0, 0, 0, 0]), e, e
         )
         @test diff(A, B, ia, ja, ib, jb) == MatrixDifference(
             ([1], [2, 11]),

@@ -37,12 +37,9 @@
         ei = Int[]
         ent = NamedTuple()
         @test diff(a, a) == NamedTupleDifference((x=0,), ent, ent)
-        @test diff(b, b) == NamedTupleDifference(
-            (x=NamedTupleDifference((s=0, t=0), ent, ent),), ent, ent
-        )
-        @test diff(c, c) == NamedTupleDifference(
-            (x=VectorDifference([1, 2], ei, ei, [0, 0], e, e),), ent, ent
-        )
+        @test diff(b, b) == NamedTupleDifference((x=NamedTupleDifference((s=0, t=0), ent, ent),), ent, ent)
+        @test diff(c, c) ==
+            NamedTupleDifference((x=VectorDifference([1, 2], ei, ei, [0, 0], e, e),), ent, ent)
         @test diff(a, d) == NamedTupleDifference((x=-1,), (y=1,), ent)
         @test diff(d, a) == NamedTupleDifference((x=1,), ent, (y=1,))
     end

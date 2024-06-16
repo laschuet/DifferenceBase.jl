@@ -126,5 +126,4 @@ removed(a::AbstractDifference) = a.remvals
 
 Access the modified elements.
 """
-modified(a::Union{VectorDifference,MatrixDifference,DictDifference,NamedTupleDifference}) =
-    a.modvals
+modified(a::Union{VectorDifference,MatrixDifference,DictDifference,NamedTupleDifference}) = a.modvals

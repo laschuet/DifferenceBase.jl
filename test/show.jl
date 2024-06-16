@@ -26,7 +26,7 @@
     end
 
     @testset "dictionary" begin
-        a = DictDifference(Dict(:x=>1, :y=>[0.0, 1.0]), Dict(), Dict(:z=>3))
+        a = DictDifference(Dict(:x => 1, :y => [0.0, 1.0]), Dict(), Dict(:z => 3))
         @test sprint(show, MIME("text/plain"), a) == """
         DictDifference with values:
          modified: Dict{Symbol, Any}(:y => [0.0, 1.0], :x => 1)

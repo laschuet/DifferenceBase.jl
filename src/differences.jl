@@ -3,8 +3,7 @@
 
 Compute the difference between vector `a` and vector `b`, and return a `VectorDifference`.
 """
-Base.diff(a::AbstractVector, b::AbstractVector) =
-    diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
+Base.diff(a::AbstractVector, b::AbstractVector) = diff(a, b, collect(1:size(a, 1)), collect(1:size(b, 1)))
 
 """
     diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector)
@@ -13,9 +12,7 @@ Like [`diff`](@ref), but provide integer vectors that number the rows of the vec
 and `b`. The vectors `ia` and `ib` represent the row numbers of `a` and `b` respectively.
 The position of each vector element refers to the row index of `a` or `b`.
 """
-function Base.diff(
-    a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector
-)
+function Base.diff(a::AbstractVector, b::AbstractVector, ia::AbstractVector, ib::AbstractVector)
     if length(a) == 0 || length(b) == 0
         T = promote_type(eltype(a), eltype(b))
         vab = sparse(view(T[], :))
@@ -83,10 +80,8 @@ function Base.diff(
         va = view(A, :)
         vb = view(B, :)
         ei = Int[]
-        size(A) == (0, 0) &&
-            return MatrixDifference((ei, ei), (ei, ei), (ei, ei), vab, vb, va)
-        size(B) == (0, 0) &&
-            return MatrixDifference((ei, ei), (ei, ei), (ei, ei), vab, va, vb)
+        size(A) == (0, 0) && return MatrixDifference((ei, ei), (ei, ei), (ei, ei), vab, vb, va)
+        size(B) == (0, 0) && return MatrixDifference((ei, ei), (ei, ei), (ei, ei), vab, va, vb)
     end
 
     mapia = Dict(zip(ia, 1:length(ia)))
@@ -102,31 +97,24 @@ function Base.diff(
     mapped_modindsib = getindex.(Ref(mapib), modindsi)
     mapped_modindsjb = getindex.(Ref(mapjb), modindsj)
     modvals = sparse(
-        vec(
-            view(A, mapped_modindsia, mapped_modindsja) -
-            view(B, mapped_modindsib, mapped_modindsjb),
-        ),
+        vec(view(A, mapped_modindsia, mapped_modindsja) - view(B, mapped_modindsib, mapped_modindsjb))
     )
 
     # Compute added indices and values
     addinds = (setdiff(ib, ia), setdiff(jb, ja))
     mapped_indicesb = CartesianIndices(B)
-    mapped_modindicesb =
-        CartesianIndex.(Iterators.product(mapped_modindsib, mapped_modindsjb))
+    mapped_modindicesb = CartesianIndex.(Iterators.product(mapped_modindsib, mapped_modindsjb))
     mapped_addindices = setdiff(mapped_indicesb, mapped_modindicesb)
     addvals = view(B, mapped_addindices)
 
     # Compute removed indices and values
     reminds = (setdiff(ia, ib), setdiff(ja, jb))
     mapped_indicesa = CartesianIndices(A)
-    mapped_modindicesa =
-        CartesianIndex.(Iterators.product(mapped_modindsia, mapped_modindsja))
+    mapped_modindicesa = CartesianIndex.(Iterators.product(mapped_modindsia, mapped_modindsja))
     mapped_remindices = setdiff(mapped_indicesa, mapped_modindicesa)
     remvals = view(A, mapped_remindices)
 
-    return MatrixDifference(
-        (modindsi, modindsj), addinds, reminds, modvals, addvals, remvals
-    )
+    return MatrixDifference((modindsi, modindsj), addinds, reminds, modvals, addvals, remvals)
 end
 
 """
@@ -214,5 +202,4 @@ julia> diff(Set([1, 2, 3, 3]), Set([4, 2, 1]))
 (Set([4]), Set([3]))
 ```
 """
-Base.diff(a::AbstractSet, b::AbstractSet) =
-    SetDifference(setdiff(b, a), setdiff(a, b))
+Base.diff(a::AbstractSet, b::AbstractSet) = SetDifference(setdiff(b, a), setdiff(a, b))

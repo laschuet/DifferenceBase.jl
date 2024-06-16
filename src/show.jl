@@ -9,9 +9,7 @@ function Base.show(io::IO, ::MIME"text/plain", a::Union{VectorDifference,MatrixD
     print(io, " removed: ", a.remvals)
 end
 
-function Base.show(
-    io::IO, ::MIME"text/plain", a::Union{DictDifference,NamedTupleDifference}
-)
+function Base.show(io::IO, ::MIME"text/plain", a::Union{DictDifference,NamedTupleDifference})
     println(io, nameof(typeof(a)), " with values:")
     println(io, " modified: ", a.modvals)
     println(io, " added: ", a.addvals)

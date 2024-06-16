@@ -5,9 +5,7 @@
     modvals = [1, 2, 3, 4]
     addvals = [1, 2]
     remvals = [3, 4]
-    a = VectorDifference(
-        modinds, addinds, reminds, modvals, view(addvals, :), view(remvals, :)
-    )
+    a = VectorDifference(modinds, addinds, reminds, modvals, view(addvals, :), view(remvals, :))
     b = VectorDifference(modinds, addinds, reminds, sparse(modvals), addvals, remvals)
     c = VectorDifference(modinds, addinds, reminds, modvals, addvals, remvals)
 
@@ -63,23 +61,10 @@
         @test diff(e, a) == VectorDifference(ei, ei, ei, se, a, e)
         @test diff(a, e) == VectorDifference(ei, ei, ei, se, a, e)
         @test (diff(a, a) == VectorDifference([1, 2, 3], ei, ei, sparse([0, 0, 0]), e, e))
-        @test (
-            diff(a, b) == VectorDifference([1, 2, 3], [4], ei, sparse([-1, -1, 0]), [7], e)
-        )
-        @test (
-            diff(b, a) == VectorDifference([1, 2, 3], ei, [4], sparse([1, 1, 0]), e, [7])
-        )
-        @test (
-            diff(a, a, ia, ia) ==
-            VectorDifference([1, 2, 5], ei, ei, sparse([0, 0, 0]), e, e)
-        )
-        @test (
-            diff(a, b, ia, ib) ==
-            VectorDifference([2, 5], [3, 7], [1], sparse([0, 0]), [3, 7], [1])
-        )
-        @test (
-            diff(b, a, ib, ia) ==
-            VectorDifference([2, 5], [1], [3, 7], sparse([0, 0]), [1], [3, 7])
-        )
+        @test (diff(a, b) == VectorDifference([1, 2, 3], [4], ei, sparse([-1, -1, 0]), [7], e))
+        @test (diff(b, a) == VectorDifference([1, 2, 3], ei, [4], sparse([1, 1, 0]), e, [7]))
+        @test (diff(a, a, ia, ia) == VectorDifference([1, 2, 5], ei, ei, sparse([0, 0, 0]), e, e))
+        @test (diff(a, b, ia, ib) == VectorDifference([2, 5], [3, 7], [1], sparse([0, 0]), [3, 7], [1]))
+        @test (diff(b, a, ib, ia) == VectorDifference([2, 5], [1], [3, 7], sparse([0, 0]), [1], [3, 7]))
     end
 end
